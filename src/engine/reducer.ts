@@ -90,7 +90,14 @@ function enterTestimony(data: CaseData, s: GameState, id: TestimonyId, effects: 
  * a displayable line (stop with cursor AT it) or a transition (execute it and stop).
  */
 function settle(data: CaseData, s: GameState, effects: Effect[]): void {
+  // Guard against goto/branch cycles in bad case data — the linter reports
+  // these; the engine must never hang on them.
+  let steps = 0
   for (;;) {
+    if (++steps > 10_000) {
+      s.script = null
+      return
+    }
     if (!s.script) return
     const lines = data.scripts[s.script.id]
     if (!lines) {
