@@ -444,9 +444,25 @@ button {
 
 .shout-overlay {
   background: rgba(6, 4, 12, 0.55);
+  overflow: hidden;
+}
+
+.speedlines {
+  position: absolute;
+  /* oversized so the rotation never exposes a corner */
+  width: 200%;
+  height: 200%;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 255, 255, 0.16) 0deg 2deg,
+    transparent 2deg 7deg
+  );
+  animation: speedlines-in 0.4s ease-out;
+  pointer-events: none;
 }
 
 .shout {
+  position: relative;
   font-size: 46px;
   font-weight: 800;
   font-style: italic;
@@ -459,6 +475,12 @@ button {
   letter-spacing: 2px;
   animation: shout-in 0.16s ease-out;
   text-align: center;
+  transform: rotate(-4deg);
+}
+
+/* SANDALI! is the "hold it" beat — cooler color, less triumphant */
+.shout[data-card='SANDALI!'] {
+  color: #6fd3f2;
 }
 
 .card {
@@ -678,11 +700,22 @@ button {
 
 @keyframes shout-in {
   from {
-    transform: scale(2.6);
+    transform: rotate(-4deg) scale(2.6);
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    transform: rotate(-4deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes speedlines-in {
+  from {
+    transform: rotate(-14deg) scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
     opacity: 1;
   }
 }
