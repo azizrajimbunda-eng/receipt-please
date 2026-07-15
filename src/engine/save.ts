@@ -29,9 +29,13 @@ export function memoryStorage(): StorageAdapter {
   }
 }
 
-export function serialize(state: GameState, savedAt: number): string {
-  const save: SaveGame = { v: 1, caseId: state.caseId, snapshot: snapshotOf(state), savedAt }
+export function serializeSnapshot(caseId: string, snapshot: Snapshot, savedAt: number): string {
+  const save: SaveGame = { v: 1, caseId, snapshot, savedAt }
   return JSON.stringify(save)
+}
+
+export function serialize(state: GameState, savedAt: number): string {
+  return serializeSnapshot(state.caseId, snapshotOf(state), savedAt)
 }
 
 const MODES: Mode[] = ['dialogue', 'choice', 'investigation', 'testimony', 'gameOver', 'caseComplete']

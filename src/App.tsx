@@ -1,19 +1,77 @@
+import { useState } from 'react'
+import type { CaseData } from './engine/types'
+import type { Snapshot } from './engine/state'
+import { SAVE_KEY, parse } from './engine/save'
+import { cases } from './cases'
+import { audio } from './audio'
+import { browserStorage } from './ui/storage'
+import { GameRoot } from './ui/GameRoot'
+
+const storage = browserStorage()
+
+interface Session {
+  nonce: number
+  data: CaseData
+  resume: Snapshot | null
+}
+
+function findSave(): { data: CaseData; snap: Snapshot } | null {
+  const raw = storage.get(SAVE_KEY)
+  if (!raw) return null
+  for (const data of Object.values(cases)) {
+    const snap = parse(raw, data)
+    if (snap) return { data, snap }
+  }
+  return null
+}
+
 export default function App() {
+  const [session, setSession] = useState<Session | null>(null)
+
+  if (session) {
+    return (
+      <GameRoot
+        key={session.nonce}
+        data={session.data}
+        resume={session.resume}
+        storage={storage}
+        onExit={() => setSession(null)}
+      />
+    )
+  }
+
+  const save = findSave()
+  const firstCase = Object.values(cases)[0]!
+
+  const start = (data: CaseData, resume: Snapshot | null) => {
+    audio.ensure() // must run synchronously inside the tap gesture
+    setSession({ nonce: Date.now(), data, resume })
+  }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        gap: 12,
-        textAlign: 'center',
-      }}
-    >
-      <h1 style={{ fontSize: 28, letterSpacing: 2 }}>RECEIPT, PLEASE!</h1>
-      <p style={{ opacity: 0.7 }}>Walang resibo, walang kaso.</p>
-      <p style={{ fontSize: 12, opacity: 0.4 }}>M0 — engine under construction</p>
+    <div className="title-screen">
+      <div className="title-art">🧾</div>
+      <h1 className="title-name">
+        RECEIPT,
+        <br />
+        PLEASE!
+      </h1>
+      <p className="title-tagline">Walang resibo, walang kaso.</p>
+      <div className="title-menu">
+        {save && (
+          <button type="button" className="menu-btn title-btn" onClick={() => start(save.data, save.snap)}>
+            ▶ Ituloy ang laro
+          </button>
+        )}
+        <button type="button" className="menu-btn title-btn" onClick={() => start(firstCase, null)}>
+          {save ? '↺ Bagong laro' : '▶ Simulan'}
+        </button>
+      </div>
+      <p className="title-footer">
+        isang audit fraud visual novel para sa CPA reviewees
+        {!storage.persistent && <br />}
+        {!storage.persistent && '(saves off sa viewer na ito)'}
+      </p>
     </div>
   )
 }
