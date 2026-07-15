@@ -1,5 +1,6 @@
 import type { DialogueLine, Speaker } from '../engine/types'
 import { audio } from '../audio'
+import { mouthBus } from './mouthBus'
 import { useTypewriter } from './useTypewriter'
 
 export function DialogueBox({
@@ -21,6 +22,7 @@ export function DialogueBox({
         : ''
   const tw = useTypewriter(text, 30, () => {
     if (speaker) audio.blip(speaker.blip)
+    if (line.kind === 'say') mouthBus.notify()
   })
   const isChoice = line.kind === 'choice'
   const narrating = line.kind === 'narrate'

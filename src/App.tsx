@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import type { CaseData } from './engine/types'
 import type { Snapshot } from './engine/state'
 import { SAVE_KEY, parse } from './engine/save'
@@ -8,6 +8,10 @@ import { browserStorage } from './ui/storage'
 import { GameRoot } from './ui/GameRoot'
 
 const storage = browserStorage()
+
+// Statically tree-shaken from both prod builds: the whole branch is dead code
+// when import.meta.env.DEV is false, so the chunk never exists.
+const SpritePreview = import.meta.env.DEV ? lazy(() => import('./dev/SpritePreview')) : null
 
 interface Session {
   nonce: number
@@ -27,6 +31,21 @@ function findSave(): { data: CaseData; snap: Snapshot } | null {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
+  const [hash, setHash] = useState(() => window.location.hash)
+
+  useEffect(() => {
+    const onHash = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  if (import.meta.env.DEV && SpritePreview && hash === '#dev') {
+    return (
+      <Suspense fallback={null}>
+        <SpritePreview />
+      </Suspense>
+    )
+  }
 
   if (session) {
     return (

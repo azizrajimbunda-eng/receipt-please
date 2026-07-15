@@ -122,11 +122,64 @@ button {
   animation: shake 0.28s linear;
 }
 
-.stage {
+.stage-frame {
+  width: 100%;
   height: 100%;
-  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage {
   position: relative;
   overflow: hidden;
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.stage-canvas-inline {
+  image-rendering: pixelated;
+  background: #221c33;
+  border: 1px solid var(--border);
+}
+
+.dev-preview {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dev-preview h3 {
+  color: var(--gold);
+}
+
+.dev-controls {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.dev-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.dev-row figcaption {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 4px;
 }
 
 .scene-name {

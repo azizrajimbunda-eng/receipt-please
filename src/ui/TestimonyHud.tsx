@@ -2,6 +2,7 @@ import type { CaseData } from '../engine/types'
 import type { GameState } from '../engine/state'
 import { currentSpeaker, currentStatement, currentTestimony, visibleStatements } from '../engine/selectors'
 import { audio } from '../audio'
+import { mouthBus } from './mouthBus'
 import { useTypewriter } from './useTypewriter'
 
 export function TestimonyHud({
@@ -28,6 +29,7 @@ export function TestimonyHud({
   const idx = st ? list.findIndex((x) => x.id === st.id) : -1
   const tw = useTypewriter(st?.text ?? '', 30, () => {
     if (witness) audio.blip(witness.blip)
+    mouthBus.notify()
   })
 
   return (
