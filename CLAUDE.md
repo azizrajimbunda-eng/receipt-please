@@ -43,7 +43,23 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 - Commit per milestone. Push → Actions deploys Pages (~1-2 min) → verify live URL → (at M8+) republish artifact mirror.
 - Case authoring flow: write `case.ts` → `npm run lint:case` → write `walkthrough.ts` → playthrough test green → hand-play on phone.
 
-## Current state (2026-07-15)
+## Current state (2026-07-16)
 
-- M0 in progress: scaffold + deploy pipeline. Engine (M1) not started.
-- Open threads: none yet.
+**v1 complete — M0 through M8 all shipped.** 44 tests green.
+
+- Case 01 "Ang Kulang na Kaha" (petty cash / doctored OR, ~20-30 min) is playable
+  start to finish; `micro-meryenda` is the tiny fixture case (also playable, kept
+  as the linter/engine test bed).
+- Cast: jun, cess, malou, alcaraz, dodong, bong, jopay. Backgrounds: firm (also
+  the no-scene default backdrop), office, street, conference, pantry.
+- Artifact build verified: one 280KB file, zero external requests.
+
+### Open threads / next up
+
+- **Case 02** — lapping (AR collections). Schema needs nothing new; write
+  `src/cases/case02-lapping/` and register it. Cases play in registry order.
+- Malou's `nervous` vs `neutral` read nearly identically at 24×32 — the SQUINT
+  patch is too subtle; the sweat bead does most of the work. Worth a pass in `#dev`.
+- Bong and Jopay have one pose each; fine for their scene count.
+- No case-select screen yet — "Simulan" always starts the first registry entry.
+- Music: only 3 loops (investigation/testimony/cornered). A title theme would help.

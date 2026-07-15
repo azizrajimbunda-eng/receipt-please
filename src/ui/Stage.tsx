@@ -7,7 +7,7 @@ import type { CaseData } from '../engine/types'
 import type { GameState } from '../engine/state'
 import { currentLine, currentScene, currentSpeaker, currentStatement } from '../engine/selectors'
 import { sprites } from '../art/sprites'
-import { backgrounds } from '../art/backgrounds'
+import { DEFAULT_BACKGROUND, backgrounds } from '../art/backgrounds'
 import { STAGE, drawActor, paintOn } from '../art/render'
 import { mouthBus } from './mouthBus'
 
@@ -28,7 +28,7 @@ export function Stage({ data, state }: { data: CaseData; state: GameState }) {
   const scene = currentScene(data, state)
   const speaker = currentSpeaker(data, state)
   const pose = poseOf(data, state)
-  const bgId = scene?.backgroundId ?? null
+  const bgId = scene?.backgroundId ?? DEFAULT_BACKGROUND
   const spriteId = speaker?.spriteId ?? null
 
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -71,11 +71,11 @@ export function Stage({ data, state }: { data: CaseData; state: GameState }) {
     const ctx = bgRef.current?.getContext('2d')
     if (!ctx) return
     ctx.clearRect(0, 0, STAGE, STAGE)
-    const painter = bgId ? backgrounds[bgId] : undefined
+    const painter = backgrounds[bgId]
     if (painter) {
       paintOn(ctx, painter)
     } else {
-      ctx.fillStyle = bgId ? '#26303f' : '#171321'
+      ctx.fillStyle = '#26303f'
       ctx.fillRect(0, 0, STAGE, STAGE)
     }
   }, [bgId])
