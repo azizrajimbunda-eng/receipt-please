@@ -1,16 +1,28 @@
-// Audio facade the UI talks to. M5 fills these in with WebAudio synthesis;
-// until then the game is silent but fully wired.
+// Audio facade the UI talks to. Everything is synthesized in code — no audio
+// files, so the single-file artifact build makes zero external requests.
 
-export type BlipClass = 'low' | 'mid' | 'high'
+import { ensureAudio, installVisibilityHandling, isMuted, setMuted } from './context'
+import { blip } from './blip'
+import type { BlipClass } from './blip'
+import { music } from './music'
+import { sfx } from './sfx'
+
+export type { BlipClass }
+
+let installed = false
 
 export const audio = {
   /** Must be called synchronously inside a user gesture (title-screen tap). */
-  ensure(): void {},
-  blip(_cls: BlipClass): void {},
-  sfx(_id: string): void {},
-  music(_id: string | null): void {},
-  setMuted(_muted: boolean): void {},
-  isMuted(): boolean {
-    return false
+  ensure(): void {
+    const ctx = ensureAudio()
+    if (ctx && !installed) {
+      installed = true
+      installVisibilityHandling()
+    }
   },
+  blip,
+  sfx,
+  music,
+  setMuted,
+  isMuted,
 }

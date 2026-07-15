@@ -56,6 +56,7 @@ export function GameRoot({
   )
 
   const drained = useRef(0)
+  const [muted, setMutedState] = useState(() => audio.isMuted())
   const [shakeSeq, setShakeSeq] = useState(0)
   const [flash, setFlash] = useState<{ color: 'white' | 'red'; seq: number } | null>(null)
   const [toast, setToast] = useState<{ text: string; seq: number } | null>(null)
@@ -110,7 +111,9 @@ export function GameRoot({
   const advance = () => dispatch({ type: 'ADVANCE' })
 
   return (
-    <div className="viewport">
+    // Defensive unlock: iOS suspends the context on tab switch, so every tap
+    // re-resumes it. ensure() is idempotent.
+    <div className="viewport" onPointerDown={() => audio.ensure()}>
       <div className="stage-wrap" key={shakeSeq} data-shake={shakeSeq > 0 ? '' : undefined}>
         <Stage data={data} state={state} />
         {flash && (
@@ -121,6 +124,18 @@ export function GameRoot({
           />
         )}
         <CredibilityMeter value={state.credibility} max={data.credibilityMax} />
+        <button
+          type="button"
+          className="mute-btn"
+          aria-label={muted ? 'I-on ang tunog' : 'I-mute ang tunog'}
+          onClick={() => {
+            const next = !muted
+            audio.setMuted(next)
+            setMutedState(next)
+          }}
+        >
+          {muted ? '🔇' : '🔊'}
+        </button>
         {toast && (
           <div key={toast.seq} className="toast">
             {toast.text}
