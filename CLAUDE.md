@@ -6,7 +6,9 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 
 - Live: https://azizrajimbunda-eng.github.io/receipt-please/ (GitHub Pages, auto-deploys `main` via Actions; tests gate the deploy)
 - Repo: https://github.com/azizrajimbunda-eng/receipt-please (folder name "Receipt Please" ≠ repo slug — same convention as Slam City)
-- Artifact mirror: (published at M8 — `npm run build:artifact` → `dist-artifact/index.html`)
+- Artifact mirror: https://claude.ai/code/artifact/11dffeae-519f-4f1c-8393-6030977ffe90
+  (pass as `url` to the Artifact tool when republishing; favicon 🧾; build with
+  `npm run build:artifact` → `dist-artifact/index.html`)
 - Dev server: launch config `receipt-please` → localhost:8643 (never start servers via Bash)
 
 ## Architecture (deliberate decisions — don't relitigate without cause)
