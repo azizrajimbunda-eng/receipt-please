@@ -81,6 +81,36 @@ button {
   margin-top: 10px;
 }
 
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+  margin-top: 10px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.case-row {
+  background: var(--panel);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-title {
+  font-size: 14px;
+  text-align: left;
+}
+
+.case-title.done {
+  color: var(--green);
+}
+
 .title-btn {
   text-align: center;
   font-size: 15px;

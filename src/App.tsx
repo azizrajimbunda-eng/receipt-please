@@ -1,13 +1,29 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import type { CaseData } from './engine/types'
 import type { Snapshot } from './engine/state'
-import { SAVE_KEY, parse } from './engine/save'
+import { SAVE_KEY, parse, saveKeyFor } from './engine/save'
 import { cases } from './cases'
 import { audio } from './audio'
 import { browserStorage } from './ui/storage'
+import { readProgress } from './ui/progress'
 import { GameRoot } from './ui/GameRoot'
 
 const storage = browserStorage()
+
+// One-time migration: the pre-case-select build kept a single global save slot.
+// Move it to the per-case key so nobody loses a run to the case-select update.
+;(() => {
+  const raw = storage.get(SAVE_KEY)
+  if (!raw) return
+  for (const data of Object.values(cases)) {
+    const snap = parse(raw, data)
+    if (snap) {
+      if (!storage.get(saveKeyFor(data.id))) storage.set(saveKeyFor(data.id), raw)
+      break
+    }
+  }
+  storage.set(SAVE_KEY, '')
+})()
 
 // Statically tree-shaken from both prod builds: the whole branch is dead code
 // when import.meta.env.DEV is false, so the chunk never exists.
@@ -19,14 +35,9 @@ interface Session {
   resume: Snapshot | null
 }
 
-function findSave(): { data: CaseData; snap: Snapshot } | null {
-  const raw = storage.get(SAVE_KEY)
-  if (!raw) return null
-  for (const data of Object.values(cases)) {
-    const snap = parse(raw, data)
-    if (snap) return { data, snap }
-  }
-  return null
+function savedSnapshot(data: CaseData): Snapshot | null {
+  const raw = storage.get(saveKeyFor(data.id))
+  return raw ? parse(raw, data) : null
 }
 
 export default function App() {
@@ -59,8 +70,7 @@ export default function App() {
     )
   }
 
-  const save = findSave()
-  const firstCase = Object.values(cases)[0]!
+  const done = readProgress(storage)
 
   const start = (data: CaseData, resume: Snapshot | null) => {
     audio.ensure() // must run synchronously inside the tap gesture
@@ -76,16 +86,31 @@ export default function App() {
         PLEASE!
       </h1>
       <p className="title-tagline">Walang resibo, walang kaso.</p>
-      <div className="title-menu">
-        {save && (
-          <button type="button" className="menu-btn title-btn" onClick={() => start(save.data, save.snap)}>
-            ▶ Ituloy ang laro
-          </button>
-        )}
-        <button type="button" className="menu-btn title-btn" onClick={() => start(firstCase, null)}>
-          {save ? '↺ Bagong laro' : '▶ Simulan'}
-        </button>
+
+      <div className="case-list">
+        {Object.values(cases).map((data) => {
+          const snap = savedSnapshot(data)
+          return (
+            <div key={data.id} className="case-row">
+              <div className={`case-title ${done.has(data.id) ? 'done' : ''}`}>
+                {done.has(data.id) ? '✓ ' : ''}
+                {data.title}
+              </div>
+              <div className="hud-row">
+                {snap && (
+                  <button type="button" className="hud-btn present" onClick={() => start(data, snap)}>
+                    ▶ Ituloy
+                  </button>
+                )}
+                <button type="button" className="hud-btn" onClick={() => start(data, null)}>
+                  {snap ? '↺ Ulitin' : '▶ Simulan'}
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </div>
+
       <p className="title-footer">
         isang audit fraud visual novel para sa CPA reviewees
         {!storage.persistent && <br />}

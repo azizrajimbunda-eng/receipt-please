@@ -7,7 +7,13 @@ import type { GameState, Mode, Snapshot } from './state'
 import { snapshotOf } from './state'
 import { visibleStatementsOf } from './reducer'
 
+/** Legacy single-slot key (pre case-select); migrated to per-case keys on boot. */
 export const SAVE_KEY = 'receipt-please:save:v1'
+
+/** One save slot per case. */
+export function saveKeyFor(caseId: string): string {
+  return `receipt-please:save:v1:${caseId}`
+}
 
 export interface SaveGame {
   v: 1

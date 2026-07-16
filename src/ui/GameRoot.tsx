@@ -7,9 +7,10 @@ import type { CaseData } from '../engine/types'
 import type { GameState, Snapshot } from '../engine/state'
 import type { Effect, GameEvent } from '../engine/events'
 import { initialState, step } from '../engine/reducer'
-import { SAVE_KEY, serializeSnapshot } from '../engine/save'
+import { saveKeyFor, serializeSnapshot } from '../engine/save'
 import { currentLine, currentNote, currentSpeaker } from '../engine/selectors'
 import { audio } from '../audio'
+import { markComplete } from './progress'
 import type { AppStorage } from './storage'
 import { Stage } from './Stage'
 import { DialogueBox } from './DialogueBox'
@@ -84,7 +85,7 @@ export function GameRoot({
             break
           case 'save':
             if (state.checkpoint) {
-              storage.set(SAVE_KEY, serializeSnapshot(data.id, state.checkpoint, Date.now()))
+              storage.set(saveKeyFor(data.id), serializeSnapshot(data.id, state.checkpoint, Date.now()))
             }
             break
           case 'evidenceAdded': {
@@ -103,6 +104,11 @@ export function GameRoot({
     const t = setTimeout(() => setToast(null), 2600)
     return () => clearTimeout(t)
   }, [toast])
+
+  // Case-select progress: mark this case done the moment the recap appears.
+  useEffect(() => {
+    if (state.mode === 'caseComplete') markComplete(storage, data.id)
+  }, [state.mode, data.id, storage])
 
   const line = currentLine(data, state)
   const note = currentNote(data, state)
