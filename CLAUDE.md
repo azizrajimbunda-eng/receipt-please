@@ -45,23 +45,27 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 - Commit per milestone. Push → Actions deploys Pages (~1-2 min) → verify live URL → (at M8+) republish artifact mirror.
 - Case authoring flow: write `case.ts` → `npm run lint:case` → write `walkthrough.ts` → playthrough test green → hand-play on phone.
 
-## Current state (2026-07-16)
+## Current state (2026-07-16, M9)
 
-**v1 complete — M0 through M8 all shipped.** 44 tests green.
+**v2 shipped — two full cases + case select.** 52 tests green.
 
-- Case 01 "Ang Kulang na Kaha" (petty cash / doctored OR, ~20-30 min) is playable
-  start to finish; `micro-meryenda` is the tiny fixture case (also playable, kept
-  as the linter/engine test bed).
-- Cast: jun, cess, malou, alcaraz, dodong, bong, jopay. Backgrounds: firm (also
-  the no-scene default backdrop), office, street, conference, pantry.
-- Artifact build verified: one 280KB file, zero external requests.
+- Case 01 "Ang Kulang na Kaha" (petty cash / doctored OR) and Case 02 "Ang
+  Paikot na Kolekta" (AR lapping at Mabuhay Beverage) both playable start to
+  finish; `micro-meryenda` remains the fixture case (also listed).
+- Case 02 proved the content-API bet: zero engine changes needed.
+- Case select on the title screen: registry order, ✓ for completed, per-case
+  save slots via `saveKeyFor(caseId)`; legacy single-slot save migrates on
+  boot (`App.tsx` IIFE). Progress key: `receipt-please:progress:v1`.
+- Cast: jun, cess, malou, alcaraz, dodong, bong, jopay, ryan, baby, olivia.
+  Backgrounds: firm (default backdrop), office, street, conference, pantry,
+  warehouse, sarisari.
+- Artifact: one 322KB file, zero external requests. Both targets redeployed.
 
 ### Open threads / next up
 
-- **Case 02** — lapping (AR collections). Schema needs nothing new; write
-  `src/cases/case02-lapping/` and register it. Cases play in registry order.
-- Malou's `nervous` vs `neutral` read nearly identically at 24×32 — the SQUINT
-  patch is too subtle; the sweat bead does most of the work. Worth a pass in `#dev`.
-- Bong and Jopay have one pose each; fine for their scene count.
-- No case-select screen yet — "Simulan" always starts the first registry entry.
-- Music: only 3 loops (investigation/testimony/cornered). A title theme would help.
+- **Case 03 candidates** — ghost employee payroll, or inventory/kiting.
+- The user has hand-played Case 01 only; **Case 02 needs a human playtest**
+  (feel, pacing, Taglish tone) — machine-verified but not ear-verified.
+- Audio tuned blind (verified firing, not heard) — user feedback pending.
+- Malou's `nervous` pose still subtle (sweat bead carries it).
+- Music: 3 loops; a title theme would finish the audio story.
