@@ -45,7 +45,17 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 - Commit per milestone. Push → Actions deploys Pages (~1-2 min) → verify live URL → (at M8+) republish artifact mirror.
 - Case authoring flow: write `case.ts` → `npm run lint:case` → write `walkthrough.ts` → playthrough test green → hand-play on phone.
 
-## Current state (2026-07-16, M9)
+## Current state (2026-07-16, M10)
+
+**Hint mechanic shipped** — "Tanong kay Ate Cess" (💡 button in testimony +
+investigation). Tiers: authored concept hints per round (`Testimony.hints`,
+enforced by tests/hints.test.ts) → generated statement pointer → generated
+evidence spoiler; press-guidance first if the target is hidden. Pure selector
+in `src/engine/hints.ts`. The linter's solver now explores the FULL reachable
+space and reports `solver-softlock` when any ordering can enter a testimony
+without its winning evidence. 62 tests. Both targets redeployed.
+
+## Previous state (M9)
 
 **v2 shipped — two full cases + case select.** 52 tests green.
 
