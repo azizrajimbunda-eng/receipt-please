@@ -119,6 +119,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Kumpleto ang Pondo',
     speaker: 'malou',
     musicId: 'testimony',
+    hints: [
+      'Ginawa mo na ang cash count, Jun. Ano ang sinabi ng numero — at ano ang sinasabi niya ngayon?',
+      'Sa imprest system: cash + vouchers = ₱20,000, palagi. May statement siyang umaasang hindi mo binilang.',
+    ],
     statements: [
       { id: 't1-s1', text: 'Sampung taon na akong custodian dito. Kailanman, walang nawala.', press: { script: 'sc-t1-p1' } },
       {
@@ -145,6 +149,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang R&M Purchase',
     speaker: 'malou',
     musicId: 'testimony',
+    hints: [
+      'Kagagaling mo lang sa Sampaloc. Ano ang nakita mo sa harap mismo ng R&M?',
+      'Kung sarado ang tindahan mula pa Mayo, walang makakabili doon ng June 12. May statement siyang nakakapit sa mismong araw na iyon.',
+    ],
     statements: [
       { id: 't2-s1', text: 'Pumunta ako sa R&M noong June 12. Bumili ako ng office supplies.', press: { script: 'sc-t2-p1' } },
       {
@@ -169,6 +177,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang R&M Purchase (binago)',
     speaker: 'malou',
     musicId: 'testimony',
+    hints: [
+      'Binago na niya ang petsa — hindi na iyon ang laban. Ano pa ang nakasulat sa resibo na kaya mong patunayang mali?',
+      'Ang nakita mo sa ilalim ng loupe. Ibang tinta ang "4". Hanapin mo kung saan niya ipinagtatanggol ang halaga.',
+    ],
     statements: [
       { id: 't2b-s1', text: 'Naalala ko na — mas maaga pala \'yon. Abril siguro.', pose: 'nervous', press: { script: 'sc-t2b-p1' } },
       { id: 't2b-s2', text: 'Na-late lang ibigay ang resibo. Nagkamali si Mrs. Ramos ng petsa.', press: { script: 'sc-t2b-p2' } },
@@ -186,6 +198,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Si Dodong ang Bumili',
     speaker: 'malou',
     musicId: 'cornered',
+    hints: [
+      'Sinisisi niya si Dodong. Huwag kang makipagtalo sa kuwento — may papel ka bang nagsasabi kung nasaan talaga si Dodong noong June 12?',
+      'Ang kopya ng gate logbook. Walang lumabas na Dodong noong araw na iyon — naka-sick leave siya.',
+    ],
     statements: [
       {
         id: 't3-s1',
@@ -205,6 +221,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Wala Akong Problema',
     speaker: 'malou',
     musicId: 'cornered',
+    hints: [
+      'Sabi niya wala siyang problema sa pera. Sa fraud triangle, ano ang tawag sa bahaging iyon — at may nahanap ka sa voucher bundle tungkol doon.',
+      'Ang statement of account mula sa ospital. Ang PRESSURE. Doon mo iharap, Jun — at dahan-dahan mo itong gawin.',
+    ],
     statements: [
       {
         id: 't3b-s1',
@@ -222,6 +242,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang Management Letter',
     speaker: 'alcaraz',
     musicId: 'testimony',
+    hints: [
+      'Hindi lang si Malou ang finding sa kasong ito, Jun. Isipin mo: sino ang nagbigay sa kanya ng OPPORTUNITY?',
+      'Ang sariling polisiya ng kompanya — bawal ang vale, may limit kada voucher, dapat may nagbabantay. Sampung taong walang sumunod. Sabihin mo iyon kahit kay Sir.',
+    ],
     statements: [
       { id: 't4-s1', text: 'Malinaw ang findings: cash shortage at altered document. Tapos na ang kaso.', press: { script: 'sc-t4-p1' } },
       {

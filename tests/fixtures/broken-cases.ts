@@ -38,6 +38,13 @@ export const notCompletable = mutate((c) => {
   c.scripts['sc-trash'] = [{ kind: 'narrate', text: 'Walang laman ang basurahan.' }]
 })
 
+/** testimony enterable BEFORE its contradiction evidence exists → solver-softlock.
+ * (Case stays completable via the good order — the bad order is the defect.) */
+export const softlockable = mutate((c) => {
+  const testify = c.scenes['pantry']!.actions.find((a) => a.id === 'testify')!
+  testify.when = { allOf: ['f-tally'] } // dropped f-resibo: enter without the milk tea OR
+})
+
 /** an extra script nothing references → orphan-script (warning, still completable) */
 export const orphanScript = mutate((c) => {
   c.scripts['sc-unused'] = [{ kind: 'narrate', text: 'hello?' }]

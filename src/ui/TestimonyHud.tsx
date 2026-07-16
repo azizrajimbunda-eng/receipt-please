@@ -13,6 +13,7 @@ export function TestimonyHud({
   onPress,
   onPresent,
   onPapers,
+  onHint,
 }: {
   data: CaseData
   state: GameState
@@ -21,6 +22,7 @@ export function TestimonyHud({
   onPress: () => void
   onPresent: () => void
   onPapers: () => void
+  onHint: () => void
 }) {
   const t = currentTestimony(data, state)
   const st = currentStatement(data, state)
@@ -58,6 +60,9 @@ export function TestimonyHud({
           🧾 IHARAP
         </button>
       </div>
+      <button type="button" className="hud-btn hint-btn" onClick={onHint}>
+        💡 Tanong kay Ate Cess
+      </button>
       <button type="button" className="hud-btn papers-btn" onClick={onPapers}>
         🗂 Working Papers ({state.evidence.length})
       </button>

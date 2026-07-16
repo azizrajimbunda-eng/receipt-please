@@ -42,6 +42,14 @@ describe('seeded defects are each caught with a specific code', () => {
     expect(msg).toContain('ev-mt-resibo')
   })
 
+  it('solver-softlock: testimony enterable without its winning evidence', () => {
+    const issues = lintCase(broken.softlockable)
+    expect(codes(issues, 'error')).toContain('solver-softlock')
+    const msg = issues.find((i) => i.code === 'solver-softlock')!.message
+    expect(msg).toContain('t-jopay')
+    expect(msg).toContain('ev-mt-resibo')
+  })
+
   it('orphan-script: unreferenced script warns but stays completable', () => {
     const issues = lintCase(broken.orphanScript)
     expect(codes(issues, 'error')).toEqual([])

@@ -7,6 +7,7 @@ import type { CaseData } from '../engine/types'
 import type { GameState, Snapshot } from '../engine/state'
 import type { Effect, GameEvent } from '../engine/events'
 import { initialState, step } from '../engine/reducer'
+import { hintsFor } from '../engine/hints'
 import { saveKeyFor, serializeSnapshot } from '../engine/save'
 import { currentLine, currentNote, currentSpeaker } from '../engine/selectors'
 import { audio } from '../audio'
@@ -18,6 +19,7 @@ import { InvestigationMenu } from './InvestigationMenu'
 import { TestimonyHud } from './TestimonyHud'
 import { WorkingPapers } from './WorkingPapers'
 import { ShoutCard } from './ShoutCard'
+import { HintCard } from './HintCard'
 import { ReviewerNoteCard } from './ReviewerNoteCard'
 import { CredibilityMeter } from './CredibilityMeter'
 import { GameOver } from './GameOver'
@@ -62,6 +64,13 @@ export function GameRoot({
   const [flash, setFlash] = useState<{ color: 'white' | 'red'; seq: number } | null>(null)
   const [toast, setToast] = useState<{ text: string; seq: number } | null>(null)
   const [papers, setPapers] = useState<'view' | 'present' | null>(null)
+  const [hint, setHint] = useState<{ open: boolean; tier: number }>({ open: false, tier: 0 })
+
+  // Consult depth resets when the puzzle context changes (new round / new scene).
+  const hintContext = state.testimony?.id ?? state.sceneId ?? state.mode
+  useEffect(() => {
+    setHint({ open: false, tier: 0 })
+  }, [hintContext])
 
   useEffect(() => {
     const batches = fxQueue.current.filter((b) => b.seq > drained.current)
@@ -156,6 +165,7 @@ export function GameRoot({
             state={state}
             onAction={(id) => dispatch({ type: 'DO_ACTION', actionId: id })}
             onPapers={() => setPapers('view')}
+            onHint={() => setHint((h) => ({ ...h, open: true }))}
           />
         )}
 
@@ -177,12 +187,27 @@ export function GameRoot({
             onPress={() => dispatch({ type: 'PRESS' })}
             onPresent={() => setPapers('present')}
             onPapers={() => setPapers('view')}
+            onHint={() => setHint((h) => ({ ...h, open: true }))}
           />
         )}
       </div>
 
       {line?.kind === 'shout' && <ShoutCard card={line.card} onDone={advance} />}
       {note && <ReviewerNoteCard note={note} onDismiss={advance} />}
+      {hint.open &&
+        (() => {
+          const tiers = hintsFor(data, state)
+          const tier = Math.min(hint.tier, tiers.length - 1)
+          return (
+            <HintCard
+              text={tiers[tier] ?? ''}
+              tier={tier}
+              total={tiers.length}
+              onMore={() => setHint((h) => ({ ...h, tier: h.tier + 1 }))}
+              onClose={() => setHint((h) => ({ ...h, open: false }))}
+            />
+          )
+        })()}
       {papers && (
         <WorkingPapers
           data={data}

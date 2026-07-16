@@ -103,6 +103,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang Sistema Ko',
     speaker: 'ryan',
     musicId: 'testimony',
+    hints: [
+      'Ang kuwento niya, maganda. Pero may schedule ka sa Working Papers na may dalawang tickmark. Ano ulit ang ibig sabihin ng mga iyon?',
+      'Sabi niya kuntento lahat ng customer. Ang aging schedule mo mismo ang nagsasabing dalawa ang galit — sa parehong ruta niya.',
+    ],
     statements: [
       { id: 't1-s1', text: 'Trenta ang tindahan sa ruta ko. Ako ang top collector ng Mabuhay.', press: { script: 'sc2-t1-p1' } },
       {
@@ -132,6 +136,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang Bayad ni Aling Baby',
     speaker: 'ryan',
     musicId: 'testimony',
+    hints: [
+      'Pansinin mo, Jun: ang duplicate, ang deposit slip, ang posting — magkakasundo silang lahat. Ano ang TANGING papel na hindi galing sa loob ng kompanya?',
+      'Sa hierarchy ng ebidensiya, ang original na hawak ng customer ang hindi naaabot ng kamay ng nandaya. Ikumpara mo ang petsa nito sa sinasabi niya.',
+    ],
     statements: [
       { id: 't2-s1', text: 'Si Aling Baby, nagbayad noong June 17. Kabisado ko \'yon.', press: { script: 'sc2-t2-p1' } },
       { id: 't2-s2', text: 'Nasa deposit slip mismo ang ₱8,000 noong June 17. May bank stamp.', press: { script: 'sc2-t2-p2' } },
@@ -149,6 +157,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Hawak Ko Lang Saglit',
     speaker: 'ryan',
     musicId: 'cornered',
+    hints: [
+      'Sabi niya "buo" ang hawak niya. Kung ganoon, kaninong pera ang pumasok sa bangko noong June 17? Binigyan kita ng trace kanina.',
+      'Ang subsidiary ledger memo — sundan mo kung kaninong account napunta ang bayad ni Mang Turo. Iyan mismo ang hugis ng lapping.',
+    ],
     statements: [
       {
         id: 't2b-s1',
@@ -166,6 +178,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Ang Totoo',
     speaker: 'ryan',
     musicId: 'cornered',
+    hints: [
+      'Inamin na niya ang delays, pero itinatanggi pa rin niya ang DAHILAN. May nahanap ka sa route folder niya, hindi ba?',
+      'Ang final notice na tiklop nang tiklop. Lingguhang hulog sa five-six — iyan ang pressure na umiikot sa buong kaso.',
+    ],
     statements: [
       {
         id: 't3-s1',
@@ -183,6 +199,10 @@ const testimonies: Record<TestimonyId, Testimony> = {
     title: 'Tahimik Lang',
     speaker: 'olivia',
     musicId: 'testimony',
+    hints: [
+      'Alam kong mabigat ito — kliyente natin siya. Pero tanungin mo ang sarili mo: hanggang kanino DAPAT umabot ang report na ito, ayon sa pamantayan?',
+      'May dokumentong pirmado ni Madam Olivia mismo na sumasagot diyan. Ibinigay ko sa iyo bago tayo pumasok.',
+    ],
     statements: [
       {
         id: 't4-s1',

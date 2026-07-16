@@ -621,6 +621,38 @@ button {
   border-color: var(--gold);
 }
 
+.hint-card {
+  border-color: var(--blue);
+}
+
+.hint-card .hint-header {
+  color: var(--blue);
+}
+
+.hint-body {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.hint-tier {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: right;
+}
+
+.hud-btn.hint-btn {
+  flex: 0 0 auto;
+  border-color: var(--blue);
+  color: var(--blue);
+  font-size: 12px;
+  padding: 8px 6px;
+  margin-top: auto;
+}
+
+.hud-btn.hint-btn + .hud-btn.papers-btn {
+  margin-top: 0;
+}
+
 .note-header {
   color: var(--gold);
   letter-spacing: 2px;

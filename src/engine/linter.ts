@@ -200,14 +200,31 @@ export function lintCase(data: CaseData): LintIssue[] {
   return issues
 }
 
-/** BFS over reachable states; wrong presents are never explored (they only cost
- * credibility), so the solver proves a penalty-free path start → caseComplete. */
+/** Evidence a player could still pick up INSIDE a round via press-script gives. */
+function roundGives(data: CaseData, tid: string): Set<string> {
+  const out = new Set<string>()
+  const t = data.testimonies[tid]
+  if (!t) return out
+  for (const st of t.statements) {
+    for (const line of data.scripts[st.press.script] ?? []) {
+      if (line.kind === 'give') out.add(line.evidence)
+    }
+  }
+  return out
+}
+
+/** BFS over ALL reachable states; wrong presents are never explored (they only
+ * cost credibility). Proves a penalty-free path start → caseComplete exists AND
+ * that no reachable ordering soft-locks a testimony (entering a round without
+ * any of its contradiction evidence in hand or obtainable via presses). */
 function solve(data: CaseData): LintIssue[] {
   const start = initialState(data)
   const seen = new Set<string>([key(start)])
   const queue: GameState[] = [start]
   const firedContradictions = new Set<string>()
   const enteredTestimonies = new Set<string>()
+  const softlocks = new Map<string, LintIssue>()
+  let completed = false
   let states = 0
 
   while (queue.length > 0) {
@@ -215,8 +232,30 @@ function solve(data: CaseData): LintIssue[] {
     if (++states > MAX_SOLVER_STATES) {
       return [{ level: 'error', code: 'solver-exploded', where: data.id, message: `search exceeded ${MAX_SOLVER_STATES} states — likely a flag/reveal loop` }]
     }
-    if (s.mode === 'caseComplete') return []
-    if (s.testimony) enteredTestimonies.add(s.testimony.id)
+    if (s.mode === 'caseComplete') {
+      completed = true
+      continue
+    }
+    if (s.mode === 'testimony' && s.testimony) {
+      const tid = s.testimony.id
+      enteredTestimonies.add(tid)
+      if (!softlocks.has(tid)) {
+        const t = data.testimonies[tid]
+        if (t) {
+          const inHand = new Set([...s.evidence, ...roundGives(data, tid)])
+          const winnable = t.statements.some((st) => st.contradiction?.evidence.some((ev) => inHand.has(ev)))
+          if (!winnable) {
+            const needed = t.statements.flatMap((st) => st.contradiction?.evidence ?? [])
+            softlocks.set(tid, {
+              level: 'error',
+              code: 'solver-softlock',
+              where: tid,
+              message: `testimony "${tid}" is reachable WITHOUT any of [${needed.join(', ')}] in hand — a player can enter and be unable to win the round`,
+            })
+          }
+        }
+      }
+    }
 
     for (const { event, jumpTo, fires } of successors(data, s)) {
       let base = s
@@ -234,6 +273,8 @@ function solve(data: CaseData): LintIssue[] {
     }
   }
 
+  if (completed) return [...softlocks.values()]
+
   // Exhausted without completing — report what never fired, the actionable bit.
   const problems: string[] = []
   for (const [tid, t] of Object.entries(data.testimonies)) {
@@ -249,12 +290,15 @@ function solve(data: CaseData): LintIssue[] {
       }
     }
   }
-  return [{
-    level: 'error',
-    code: 'solver-not-completable',
-    where: data.id,
-    message: `no path from start to caseComplete. ${problems.length ? problems.join('; ') : 'play dead-ends before endCase'}`,
-  }]
+  return [
+    ...softlocks.values(),
+    {
+      level: 'error',
+      code: 'solver-not-completable',
+      where: data.id,
+      message: `no path from start to caseComplete. ${problems.length ? problems.join('; ') : 'play dead-ends before endCase'}`,
+    },
+  ]
 }
 
 interface Successor {

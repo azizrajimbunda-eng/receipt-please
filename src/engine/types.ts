@@ -121,6 +121,12 @@ export interface Testimony {
   musicId?: string
   /** 4–6 typically; hidden ones revealed via press */
   statements: Statement[]
+  /**
+   * Authored consult hints for this round, in Ate Cess's voice, mildest first
+   * (concept nudge → sharper pointer). The engine always appends two generated
+   * tiers after these: the target statement, then the exact evidence.
+   */
+  hints?: string[]
 }
 
 export interface CaseData {

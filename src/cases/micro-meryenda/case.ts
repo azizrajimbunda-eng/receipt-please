@@ -164,6 +164,9 @@ export const microCase: CaseData = {
       title: 'Wala Akong Alam sa Meryenda Fund',
       speaker: 'jopay',
       musicId: 'testimony',
+      hints: [
+        'Tingnan mo ang resibo mula sa basurahan — may petsa iyon, may oras pa. Sino ang nagsasalita na parang hindi iyon nangyari?',
+      ],
       statements: [
         {
           id: 'st-1',

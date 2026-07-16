@@ -9,11 +9,13 @@ export function InvestigationMenu({
   state,
   onAction,
   onPapers,
+  onHint,
 }: {
   data: CaseData
   state: GameState
   onAction: (id: string) => void
   onPapers: () => void
+  onHint: () => void
 }) {
   const scene = currentScene(data, state)
   const actions = visibleActions(data, state)
@@ -33,6 +35,9 @@ export function InvestigationMenu({
           </button>
         ))}
       </div>
+      <button type="button" className="hud-btn hint-btn" onClick={onHint}>
+        💡 Tanong kay Ate Cess
+      </button>
       <button type="button" className="hud-btn papers-btn" onClick={onPapers}>
         🗂 Working Papers ({state.evidence.length})
       </button>
