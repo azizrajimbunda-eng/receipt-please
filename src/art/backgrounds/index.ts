@@ -4,6 +4,7 @@ import { paintFirm } from './firm'
 import { paintOffice } from './office'
 import { paintPantry } from './pantry'
 import { paintSarisari } from './sarisari'
+import { paintSite } from './site'
 import { paintStreet } from './street'
 import { paintWarehouse } from './warehouse'
 
@@ -16,6 +17,7 @@ export const backgrounds: Record<string, (g: Grid) => void> = {
   'bg-pantry': paintPantry,
   'bg-warehouse': paintWarehouse,
   'bg-sarisari': paintSarisari,
+  'bg-site': paintSite,
 }
 
 /** Backdrop before the first moveTo — the opening briefing happens at the firm. */

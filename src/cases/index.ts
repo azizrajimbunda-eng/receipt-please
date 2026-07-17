@@ -4,11 +4,13 @@
 import type { CaseData } from '../engine/types'
 import { case01 } from './case01-petty-cash/case'
 import { case02 } from './case02-lapping/case'
+import { case03 } from './case03-ghost-payroll/case'
 import { microCase } from './micro-meryenda/case'
 
 /** Registry order = display order on the case-select screen. */
 export const cases: Record<string, CaseData> = {
   [case01.id]: case01,
   [case02.id]: case02,
+  [case03.id]: case03,
   [microCase.id]: microCase,
 }
