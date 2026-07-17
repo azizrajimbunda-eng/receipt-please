@@ -45,7 +45,21 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 - Commit per milestone. Push → Actions deploys Pages (~1-2 min) → verify live URL → (at M8+) republish artifact mirror.
 - Case authoring flow: write `case.ts` → `npm run lint:case` → write `walkthrough.ts` → playthrough test green → hand-play on phone.
 
-## Current state (2026-07-16, M10)
+## Current state (2026-07-17, M11)
+
+**Three full cases + hints shipped.** 71 tests green.
+
+- Case 03 "Ang Sweldo ng Multo" (ghost payroll at Tibay Builders): collusion
+  defeats segregation; the surprise payout observation is the set piece; Weng
+  the timekeeper is the whistleblower (she wrote the anonymous letter).
+  Round-4 subversions so far: scope (C1), burial (C2), fatalism (C3).
+- Known env quirk: the Browser pane's screenshot capture can return black
+  frames — verify art via canvas `getImageData` pixel sampling in `#dev`.
+- Still pending from the user: Case 02+03 human playtest, audio verdict.
+- Case 04 candidates: check kiting (bank recs, cutoff statements) or
+  inventory. PWA + Reviewer Notebook remain the top non-case features.
+
+## Previous state (M10)
 
 **Hint mechanic shipped** — "Tanong kay Ate Cess" (💡 button in testimony +
 investigation). Tiers: authored concept hints per round (`Testimony.hints`,
