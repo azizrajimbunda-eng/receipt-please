@@ -14,6 +14,7 @@ import { cases } from '../src/cases'
 import { case01Walkthrough } from '../src/cases/case01-petty-cash/walkthrough'
 import { case02Walkthrough } from '../src/cases/case02-lapping/walkthrough'
 import { case03Walkthrough } from '../src/cases/case03-ghost-payroll/walkthrough'
+import { case04Walkthrough } from '../src/cases/case04-mas/walkthrough'
 import { microWalkthrough } from '../src/cases/micro-meryenda/walkthrough'
 
 const MAX_TAPS = 200
@@ -133,6 +134,37 @@ describe('case03-ghost-payroll playthrough', () => {
 
     const resumed = step(data, initialState(data), { type: 'LOAD', snapshot: snap! }).state
     const end = play(data, case03Walkthrough.slice(split), resumed)
+    expect(end.mode).toBe('caseComplete')
+  })
+})
+
+describe('case04-mas playthrough', () => {
+  const data = cases['case04-mas']!
+
+  it('completes start-to-finish with the penalty path exercised', () => {
+    const end = play(data, case04Walkthrough)
+    expect(end.mode).toBe('caseComplete')
+    expect(end.credibility).toBe(4) // exactly one deliberate wrong present
+  })
+
+  it('surfaces every reviewer note in the case', () => {
+    const end = play(data, case04Walkthrough)
+    expect([...end.seenNotes].sort()).toEqual(Object.keys(data.notes).sort())
+  })
+
+  it('collects every evidence item', () => {
+    const end = play(data, case04Walkthrough)
+    expect([...end.evidence].sort()).toEqual(Object.keys(data.evidence).sort())
+  })
+
+  it('reaches the same ending after a mid-case save/load round-trip', () => {
+    const split = case04Walkthrough.findIndex((e) => e.type === 'DO_ACTION' && e.actionId === 'testify1') + 1
+    const mid = play(data, case04Walkthrough.slice(0, split))
+    const snap = parse(serialize(mid, 777), data)
+    expect(snap).not.toBeNull()
+
+    const resumed = step(data, initialState(data), { type: 'LOAD', snapshot: snap! }).state
+    const end = play(data, case04Walkthrough.slice(split), resumed)
     expect(end.mode).toBe('caseComplete')
   })
 })

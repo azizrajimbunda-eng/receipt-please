@@ -8,8 +8,11 @@ import { igme } from './igme'
 import { jopay } from './jopay'
 import { jun } from './jun'
 import { malou } from './malou'
+import { marco } from './marco'
 import { nestor } from './nestor'
+import { nina } from './nina'
 import { olivia } from './olivia'
+import { rosa } from './rosa'
 import { ryan } from './ryan'
 import { weng } from './weng'
 
@@ -29,4 +32,7 @@ export const sprites: Record<string, PixelSprite> = {
   nestor,
   igme,
   weng,
+  marco,
+  rosa,
+  nina,
 }

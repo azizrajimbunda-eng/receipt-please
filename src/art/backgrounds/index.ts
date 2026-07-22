@@ -1,4 +1,5 @@
 import type { Grid } from '../render'
+import { paintBakery } from './bakery'
 import { paintConference } from './conference'
 import { paintFirm } from './firm'
 import { paintOffice } from './office'
@@ -18,6 +19,7 @@ export const backgrounds: Record<string, (g: Grid) => void> = {
   'bg-warehouse': paintWarehouse,
   'bg-sarisari': paintSarisari,
   'bg-site': paintSite,
+  'bg-bakery': paintBakery,
 }
 
 /** Backdrop before the first moveTo — the opening briefing happens at the firm. */
