@@ -45,19 +45,35 @@ Visual novel where a junior auditor exposes fraud by pressing testimony and pres
 - Commit per milestone. Push → Actions deploys Pages (~1-2 min) → verify live URL → (at M8+) republish artifact mirror.
 - Case authoring flow: write `case.ts` → `npm run lint:case` → write `walkthrough.ts` → playthrough test green → hand-play on phone.
 
-## Current state (2026-07-17, M11)
+## Current state (2026-07-17, M12)
 
-**Three full cases + hints shipped.** 71 tests green.
+**Four full cases + hints shipped.** 89 tests green.
 
-- Case 03 "Ang Sweldo ng Multo" (ghost payroll at Tibay Builders): collusion
-  defeats segregation; the surprise payout observation is the set piece; Weng
-  the timekeeper is the whistleblower (she wrote the anonymous letter).
-  Round-4 subversions so far: scope (C1), burial (C2), fatalism (C3).
-- Known env quirk: the Browser pane's screenshot capture can return black
-  frames — verify art via canvas `getImageData` pixel sampling in `#dev`.
-- Still pending from the user: Case 02+03 human playtest, audio verdict.
-- Case 04 candidates: check kiting (bank recs, cutoff statements) or
-  inventory. PWA + Reviewer Notebook remain the top non-case features.
+- Case 04 "Ang Presyo ng Payo" — first NON-fraud case (Management Advisory
+  Services). A consultant's roadmap is four relevant-costing fallacies:
+  keep-or-drop (segment margin vs allocated), special order at idle capacity,
+  make-or-buy with an undisclosed self-owned supplier (conflict of interest),
+  and a sunk-cost finale defended by the CLIENT herself.
+- **MAS math is content**: `tests/case04-math.test.ts` pins the arithmetic
+  identities AND asserts result figures appear in the evidence prose. Any new
+  MAS-type case must do the same — the linter can't check numbers.
+- Round-4 subversion set is now: scope (C1), burial (C2), fatalism (C3),
+  the heart (C4). A future case should break this pattern, not extend it.
+- Cast total: 13 sprites. Backgrounds: firm, office, street, conference,
+  pantry, warehouse, sarisari, site, bakery.
+- Known env quirk: Browser pane screenshots can return black frames — verify
+  art via canvas `getImageData` pixel sampling in `#dev` (proportional
+  fractional coords, not fixed px — gallery zoom varies).
+- Still pending from the user: human playtest of C2/C3/C4, audio verdict.
+- Case 05 candidates: check kiting (two banks, cutoff statements), inventory
+  costing, or a governance/ethics case. PWA + Reviewer Notebook remain the
+  top non-case features.
+
+## Previous state (M11)
+
+Case 03 "Ang Sweldo ng Multo" (ghost payroll, Tibay Builders): collusion
+defeats segregation; surprise payout observation is the set piece; Weng the
+timekeeper is the whistleblower. 71 tests.
 
 ## Previous state (M10)
 
